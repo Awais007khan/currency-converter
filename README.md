@@ -17,7 +17,9 @@ A simple currency converter web app that converts between different currencies u
 
 ## 📦 API Used
 
-- https://latest.currency-api.pages.dev
+## 📦 API Used
+
+https://latest.currency-api.pages.dev/v1/currencies/eur.json
 
 ## ▶️ How to Run
 
