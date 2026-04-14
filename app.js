@@ -58,7 +58,7 @@
 // });
 
 // Update version of Code
-const BASE_URL = "https://latest.currency-api.pages.dev/v1/currencies/eur.json";
+/*const BASE_URL = "https://latest.currency-api.pages.dev/v1/currencies/eur.json";
 
 const dropdowns = document.querySelectorAll(".dropdown select");
 const btn = document.querySelector("form button");
@@ -145,7 +145,98 @@ btn.addEventListener("click", async (evt) => {
   //  ADDED (display result)
   msg.innerText = `${amountValue} ${from.toUpperCase()} = ${finalAmount.toFixed(2)} ${to.toUpperCase()}`;
 });
+*/
+// improved code:
+const BASE_URL = "https://latest.currency-api.pages.dev/v1/currencies/eur.json";
 
+const dropdowns = document.querySelectorAll(".dropdown select");
+const btn = document.querySelector("form button");
+const fromCurr = document.querySelector(".from select");
+const toCurr = document.querySelector(".to select");
+const msg = document.querySelector(".msg");
+
+// ✅ Populate dropdowns
+for (let select of dropdowns) {
+  for (let currCode in countryList) {
+    let newOption = document.createElement("option");
+    newOption.innerText = currCode;
+    newOption.value = currCode;
+
+    if (select.name === "from" && currCode === "USD") {
+      newOption.selected = "selected";
+    } else if (select.name === "to" && currCode === "PKR") {
+      newOption.selected = "selected";
+    }
+
+    select.append(newOption);
+  }
+
+  select.addEventListener("change", (evt) => {
+    updateFlag(evt.target);
+  });
+}
+
+// ✅ Load flags on start
+window.addEventListener("load", () => {
+  updateFlag(fromCurr);
+  updateFlag(toCurr);
+});
+
+// ✅ FIXED FLAG FUNCTION
+const updateFlag = (element) => {
+  let currCode = element.value;
+  let countryCode = countryList[currCode];
+
+  // ❗ IMPORTANT FIX
+  if (!countryCode) return;
+
+  let img = element.parentElement.querySelector("img");
+
+  // ❗ IMPORTANT FIX
+  if (!img) return;
+
+  let newSrc = `https://flagcdn.com/48x36/${countryCode.toLowerCase()}.png`;
+  img.src = newSrc;
+};
+
+// ✅ MAIN LOGIC
+btn.addEventListener("click", async (evt) => {
+  evt.preventDefault();
+
+  let amount = document.querySelector(".amount input");
+  let amountValue = Number(amount.value);
+
+  // ❗ FIXED CONDITION
+  if (!amountValue || amountValue < 1) {
+    amountValue = 1;
+    amount.value = "1";
+  }
+
+  let response = await fetch(BASE_URL);
+  let data = await response.json();
+
+  let from = fromCurr.value.toLowerCase();
+  let to = toCurr.value.toLowerCase();
+
+  let rates = data.eur;
+
+  // ❗ SAFETY CHECK
+  if (!rates[from] || !rates[to]) {
+    msg.innerText = "Currency not supported!";
+    return;
+  }
+
+  let finalAmount;
+
+  if (from === "eur") {
+    finalAmount = amountValue * rates[to];
+  } else {
+    let inEUR = amountValue / rates[from];
+    finalAmount = inEUR * rates[to];
+  }
+
+  msg.innerText = `${amountValue} ${from.toUpperCase()} = ${finalAmount.toFixed(2)} ${to.toUpperCase()}`;
+});
 
 
 
