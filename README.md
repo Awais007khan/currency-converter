@@ -15,7 +15,9 @@ A simple currency converter web app that converts between different currencies u
 - CSS
 - JavaScript (Fetch API)
 
-## 📦 API Used
+## 📦 Click here for Live Demo 
+
+https://github.com/Awais007khan/currency-converter
 
 ## 📦 API Used
 
