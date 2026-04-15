@@ -17,8 +17,8 @@ A simple currency converter web app that converts between different currencies u
 
 ## 📦 Click here for Live Demo 
 
-https://github.com/Awais007khan/currency-converter
-
+ https://awais007khan.github.io/currency-converter/
+ 
 ## 📦 API Used
 
 https://latest.currency-api.pages.dev/v1/currencies/eur.json
